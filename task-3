@@ -1,0 +1,14 @@
+SELECT
+    Generation,
+    ROUND((COUNT() * 100.0) / (SELECT COUNT() FROM Campers), 2) AS Percentage
+FROM (
+    SELECT 
+        CASE
+            WHEN strftime('%Y', 'now') - strftime('%Y', DateOfBirth) BETWEEN 1965 AND 1980 THEN 'Gen X'
+            WHEN strftime('%Y', 'now') - strftime('%Y', DateOfBirth) BETWEEN 1981 AND 1996 THEN 'Millennials'
+            WHEN strftime('%Y', 'now') - strftime('%Y', DateOfBirth) BETWEEN 1997 AND 2012 THEN 'Gen Z'
+            ELSE 'Gen Alpha'
+        END AS Generation
+    FROM Campers
+) AS GenerationData
+GROUP BY Generation;
