@@ -1,0 +1,30 @@
+CREATE TABLE IF NOT EXISTS Campers (
+    CamperID INTEGER PRIMARY KEY AUTOINCREMENT,
+    FirstName TEXT,
+    LastName TEXT,
+    DateOfBirth DATE,
+    Gender TEXT
+);
+
+WITH RECURSIVE numbers(num) AS (
+    SELECT 1
+    UNION ALL
+    SELECT num + 1
+    FROM numbers
+    WHERE num < 5000
+)
+INSERT INTO Campers (FirstName, LastName, DateOfBirth, Gender)
+SELECT
+    'FirstName_' || num AS FirstName,  
+    'LastName_' || num AS LastName,    
+    CASE
+        WHEN num <= 900 THEN date('now', '-12 years')  -- 18% aged 7-12
+        WHEN num <= 1800 THEN date('now', '-14 years')  -- 27% aged 13-14
+        WHEN num <= 2600 THEN date('now', '-17 years')  -- 20% aged 15-17
+        ELSE date('now', '-19 years')  -- Rest up to 19 years old
+    END AS DateOfBirth,
+    CASE
+        WHEN num <= 3250 THEN 'F'  -- 65% girls
+        ELSE 'M'                    -- 35% boys
+    END AS Gender
+FROM numbers;
