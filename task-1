@@ -1,0 +1,31 @@
+CREATE TABLE IF NOT EXISTS Campers (
+    CamperID INTEGER PRIMARY KEY,
+    FirstName TEXT,
+    LastName TEXT,
+    DateOfBirth DATE,
+    Gender TEXT
+);
+
+
+CREATE TABLE IF NOT EXISTS Camps (
+    CampID INTEGER PRIMARY KEY,
+    CampName TEXT,
+    Location TEXT,
+    StartDate DATE,
+    EndDate DATE
+);
+
+
+CREATE TABLE IF NOT EXISTS CampVisits (
+    VisitID INTEGER PRIMARY KEY,
+    CamperID INTEGER,
+    CampID INTEGER,
+    VisitDate DATE,
+    FOREIGN KEY (CamperID) REFERENCES Campers(CamperID),
+    FOREIGN KEY (CampID) REFERENCES Camps(CampID)
+);
+SELECT COUNT(*) AS VisitCount
+FROM CampVisits cv
+JOIN Campers c ON cv.CamperID = c.CamperID
+WHERE c.FirstName = 'Lakshmi'
+AND cv.VisitDate >= date('now', '-3 years');
